@@ -10,21 +10,27 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    /* Styling Header dan Teks */
-    .main-title {
-        font-size: 38px;
-        font-weight: 800;
-        color: #0f4c81; /* Warna biru medis */
+    /* Styling Judul agar Besar & Menonjol */
+    .hero-title {
+        font-size: 4.5rem !important;
+        font-weight: 900 !important;
+        background: linear-gradient(45deg, #007bb5, #00d2ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin-bottom: 0px;
+        line-height: 1.1;
+        letter-spacing: -1px;
     }
-    .sub-title {
-        font-size: 18px;
-        color: #5a6a85;
-        margin-bottom: 20px;
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: #888888; /* Warna abu-abu netral untuk Light/Dark mode */
+        margin-top: 5px;
+        margin-bottom: 30px;
+        font-weight: 500;
     }
-    /* Styling Tombol Prediksi */
+    /* Styling Tombol Prediksi (Tetap konsisten di semua mode) */
     .stButton>button {
-        background-color: #007bb5;
+        background: linear-gradient(90deg, #007bb5, #005f8c);
         color: white;
         font-weight: 600;
         border-radius: 8px;
@@ -34,22 +40,23 @@ st.markdown("""
         transition: all 0.3s ease;
     }
     .stButton>button:hover {
-        background-color: #005f8c;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 181, 0.4);
+        color: white;
     }
-    /* Card untuk Metrik Hasil */
+    /* Card untuk Metrik Hasil - Menggunakan rgba agar adaptif di Light/Dark mode */
     div[data-testid="metric-container"] {
-        background-color: #f8fbff;
-        border: 1px solid #d0e1f9;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.03);
+        background-color: rgba(128, 128, 128, 0.05);
+        border: 1px solid rgba(128, 128, 128, 0.2);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<p class="main-title">🧬 VaroGene-XAI</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Platform Presisi Skrining & Stratifikasi Risiko Varikokel Berbasis Machine Learning</p>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">🧬 VaroGene-XAI</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-subtitle">Platform Presisi Skrining & Stratifikasi Risiko Varikokel Berbasis Machine Learning</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3022/3022934.png", width=60) # Ikon DNA dekoratif
@@ -132,23 +139,29 @@ if btn_predict:
             feature_names = ['SOD2', 'HSPA2', 'TNF', 'BAX', 'CAT']
             shap_values = [-(10-sod2)*0.3, -(10-hspa2)*0.2, tnf*0.35, bax*0.25, -(10-cat)*0.1]
             
-            # Kustomisasi Matplotlib agar terlihat lebih modern & bersih
             fig, ax = plt.subplots(figsize=(7, 3.5))
             
-            # Warna yang lebih soft
+            # Membuat background Matplotlib tembus pandang (Support Light/Dark)
+            fig.patch.set_alpha(0.0) 
+            ax.set_facecolor("transparent")
+            
+            # Warna batang grafik (Merah soft / Biru soft)
             colors = ['#ef476f' if x > 0 else '#118ab2' for x in shap_values] 
             bars = ax.barh(feature_names, shap_values, color=colors, height=0.6, alpha=0.9)
             
-            # Menghilangkan garis tepi kotak grafik agar elegan
+            # Menghilangkan garis tepi kotak
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
-            ax.spines['left'].set_color('#cccccc')
-            ax.spines['bottom'].set_color('#cccccc')
+            
+            # Mengubah warna font & axis menjadi abu-abu (Terlihat di putih & hitam)
+            ax.spines['left'].set_color('gray')
+            ax.spines['bottom'].set_color('gray')
+            ax.tick_params(colors='gray')
             
             # Menambahkan Grid vertikal tipis
-            ax.xaxis.grid(True, linestyle='--', alpha=0.5)
+            ax.xaxis.grid(True, linestyle='--', alpha=0.3, color='gray')
             
-            ax.set_xlabel("Kontribusi Risiko (Merah: Meningkatkan, Biru: Menurunkan)", color='#555555', fontsize=9)
+            ax.set_xlabel("Kontribusi Risiko (Merah: Meningkatkan, Biru: Menurunkan)", color='gray', fontsize=9)
             plt.tight_layout()
             
             st.pyplot(fig)
