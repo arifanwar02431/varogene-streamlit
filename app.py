@@ -143,7 +143,7 @@ if btn_predict:
             
             # Membuat background Matplotlib tembus pandang (Support Light/Dark)
             fig.patch.set_alpha(0.0) 
-            ax.set_facecolor("transparent")
+            ax.set_facecolor("none")
             
             # Warna batang grafik (Merah soft / Biru soft)
             colors = ['#ef476f' if x > 0 else '#118ab2' for x in shap_values] 
