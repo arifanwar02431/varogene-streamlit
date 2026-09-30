@@ -9,10 +9,10 @@ st.set_page_config(
     page_title="VaroGene-XAI | Inovasi Medis",
     page_icon="🧬",
     layout="wide",
-    initial_sidebar_state="collapsed" # Menyembunyikan sidebar agar fokus ke main page
+    initial_sidebar_state="collapsed" 
 )
 
-# 2. KUSTOMISASI CSS TEMA MEDIS & TEKNOLOGI
+# 2. KUSTOMISASI CSS TEMA MEDIS & INOVASI
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -21,11 +21,16 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
+    /* PALET MEDIS-INOVASI:
+       Deep Blue (Trust/Tech): #1E3A8A
+       Bright Teal (Health/Innovation): #00C2CB
+    */
+    
     /* Hero Section (Judul Utama) */
     .hero-title {
         font-size: 4.5rem !important;
         font-weight: 800 !important;
-        background: -webkit-linear-gradient(45deg, #0ea5e9, #14b8a6); /* Gradasi Sky Blue ke Teal */
+        background: -webkit-linear-gradient(45deg, #1E3A8A, #00C2CB); /* Gradasi Deep Blue ke Teal */
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0px;
@@ -46,25 +51,26 @@ st.markdown("""
     .section-header {
         font-size: 1.8rem;
         font-weight: 600;
-        border-bottom: 3px solid rgba(14, 165, 233, 0.2);
+        border-bottom: 3px solid rgba(0, 194, 203, 0.3);
         padding-bottom: 10px;
         margin-top: 40px;
         margin-bottom: 25px;
-        color: #0f172a;
+        color: #1E3A8A; /* Deep Blue */
     }
     
     /* Box Edukasi */
     .edu-box {
-        background: linear-gradient(90deg, rgba(14, 165, 233, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
-        border-left: 5px solid #0ea5e9;
-        padding: 20px;
+        background: linear-gradient(90deg, rgba(30, 58, 138, 0.05) 0%, rgba(0, 194, 203, 0.05) 100%);
+        border-left: 5px solid #00C2CB;
+        padding: 22px;
         border-radius: 0 12px 12px 0;
         margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
     
     /* Tombol Utama */
     .stButton>button {
-        background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+        background: linear-gradient(135deg, #1E3A8A 0%, #00C2CB 100%);
         color: white !important;
         font-weight: 600;
         font-size: 1.1rem;
@@ -73,18 +79,18 @@ st.markdown("""
         padding: 12px 24px;
         width: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2);
+        box-shadow: 0 4px 10px rgba(0, 194, 203, 0.3);
     }
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4);
+        box-shadow: 0 8px 20px rgba(0, 194, 203, 0.5);
     }
     
     /* Dark Mode Adjustment */
     @media (prefers-color-scheme: dark) {
-        .section-header { color: #f1f5f9; border-bottom: 3px solid rgba(14, 165, 233, 0.4); }
-        .hero-subtitle { color: #94a3b8; }
-        .edu-box { color: #e2e8f0; }
+        .section-header { color: #f8fafc; border-bottom: 3px solid rgba(0, 194, 203, 0.5); }
+        .hero-subtitle { color: #cbd5e1; }
+        .edu-box { color: #f1f5f9; background: linear-gradient(90deg, rgba(30, 58, 138, 0.15) 0%, rgba(0, 194, 203, 0.1) 100%);}
     }
     </style>
 """, unsafe_allow_html=True)
@@ -96,7 +102,7 @@ st.markdown('<div class="hero-subtitle">Platform Presisi Skrining & Stratifikasi
 # 4. FITUR EDUKASI & LITERASI (Bagian Atas)
 st.markdown("""
 <div class="edu-box">
-    <h4 style="margin-top:0;">📖 Mengapa Profil Genetik Penting dalam Varikokel?</h4>
+    <h4 style="margin-top:0; color:#00C2CB;">📖 Mengapa Profil Genetik Penting dalam Varikokel?</h4>
     <p style="margin-bottom:0;">
     Varikokel adalah pembesaran abnormal pada vena di dalam skrotum yang dapat memicu stres oksidatif dan infertilitas pria. 
     Penelitian modern menunjukkan bahwa ketidakseimbangan ekspresi gen terkait antioksidan (seperti <b>SOD2, CAT</b>), 
@@ -164,11 +170,12 @@ if btn_predict:
             
             fig, ax = plt.subplots(figsize=(8, 3.5))
             
-            # Memperbaiki error transparansi Matplotlib (Gunakan "none", bukan "transparent")
+            # Background grafik dibuat transparan
             fig.patch.set_facecolor("none") 
             ax.set_facecolor("none")
             
-            colors = ['#ef4444' if x > 0 else '#0ea5e9' for x in shap_values] 
+            # Palet Medis untuk Grafik: Merah (Peringatan/Naik), Teal (Aman/Turun)
+            colors = ['#EF4444' if x > 0 else '#00C2CB' for x in shap_values] 
             bars = ax.barh(feature_names, shap_values, color=colors, height=0.6, alpha=0.9)
             
             # Desain Grafik Bersih
@@ -179,7 +186,7 @@ if btn_predict:
             ax.tick_params(colors='gray')
             ax.xaxis.grid(True, linestyle='--', alpha=0.3, color='gray')
             
-            ax.set_xlabel("Kontribusi Gen Terhadap Risiko (Merah: Meningkatkan, Biru: Menurunkan)", color='gray', fontsize=9)
+            ax.set_xlabel("Kontribusi Gen Terhadap Risiko (Merah: Meningkatkan, Teal: Menurunkan)", color='gray', fontsize=9)
             plt.tight_layout()
             
             st.pyplot(fig)
