@@ -211,4 +211,3 @@ Jika Anda tertarik mempelajari lebih dalam mengenai patofisiologi genetik pada k
 
 *Dikembangkan untuk tujuan penelitian akademis dan skrining awal. Selalu konsultasikan dengan dokter urologi untuk diagnosis klinis.*
 """)
-```
